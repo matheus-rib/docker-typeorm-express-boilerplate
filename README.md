@@ -22,6 +22,7 @@ Few features included in this project (check [templates folder](https://github.c
 - Testing setup (Factories and Feature testing)
 - Premade pagination service / middleware
 - Error handling
+- Swagger documentation
 
 ## Requirements
 - [Docker](https://www.docker.com) (and docker-compose)

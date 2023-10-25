@@ -1,0 +1,351 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Docker Typeorm Express Boilerplate",
+    "description": "Boilerplate for an API made using Typescript, Express, PostgreSQL, Docker and Jest (for unit and feature testing)",
+    "termsOfService": "<insert-your-url-to-terms-of-service-here>",
+    "contact": {
+      "email": "matt.ribeiro14@outlook.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/matheus-rib/docker-typeorm-express-boilerplate/blob/main/LICENSE"
+    },
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Example",
+      "description": "here is an example"
+    }
+  ],
+  "paths": {
+    "/examples": {
+      "get": {
+        "tags": [
+          "Example"
+        ],
+        "summary": "Gets a list of examples",
+        "description": "Used to retrieve a paginated list of examples",
+        "operationId": "listExamples",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "used to select the desired page",
+            "format": "int64",
+            "default": 1,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "take",
+            "description": "used to limit the amount of retrieved results",
+            "format": "int64",
+            "default": 30,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "used to add filter on the list. Can be an object, string, brackets or an array of objects matching the Typeorm Where default clauses",
+            "default": null,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "schema": {
+              "$ref": "#/definitions/ApiListResponse"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Example"
+        ],
+        "summary": "Adds a new example",
+        "description": "Add a new example",
+        "operationId": "addExample",
+        "responses": {
+          "200": {
+            "description": "Successfully added new Example",
+            "schema": {
+              "$ref": "#/definitions/Example"
+            }
+          },
+          "400": {
+            "description": "Invalid attributes value",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "description": "Create a new example",
+            "required": true,
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Example"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/examples/{exampleId}": {
+      "get": {
+        "tags": [
+          "Example"
+        ],
+        "summary": "Finds an Example by ID",
+        "description": "Finds an Example by ID",
+        "operationId": "findExampleByID",
+        "parameters": [
+          {
+            "name": "exampleId",
+            "in": "path",
+            "description": "The ID to perform the search for",
+            "required": true,
+            "default": "1",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found the example",
+            "schema": {
+              "$ref": "#/definitions/Example"
+            }
+          },
+          "404": {
+            "description": "Not found an example with the desired ID",
+            "schema": {
+              "$ref": "#/definitions/ApiRecordNotFoundErrorResponse"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Example"
+        ],
+        "summary": "Updates an Example by ID",
+        "description": "Updates an Example by ID",
+        "operationId": "updateExampleByID",
+        "parameters": [
+          {
+            "name": "exampleId",
+            "in": "path",
+            "description": "The ID to perform the search for",
+            "required": true,
+            "default": "1",
+            "type": "string"
+          },
+          {
+            "description": "Update a new example",
+            "required": true,
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Example"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated example",
+            "schema": {
+              "$ref": "#/definitions/Example"
+            }
+          },
+          "400": {
+            "description": "Invalid attributes value",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found an example with the desired ID to be updated",
+            "schema": {
+              "$ref": "#/definitions/ApiRecordNotFoundErrorResponse"
+            }
+          }
+        },
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Example"
+        ],
+        "summary": "Deletes an Example by ID",
+        "description": "Deletes an Example by ID",
+        "operationId": "deleteExampleByID",
+        "parameters": [
+          {
+            "name": "exampleId",
+            "in": "path",
+            "description": "The ID to perform the search for",
+            "required": true,
+            "default": "1",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation - No content"
+          },
+          "404": {
+            "description": "Not found an example with the desired ID to be updated",
+            "schema": {
+              "$ref": "#/definitions/ApiRecordNotFoundErrorResponse"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Example": {
+      "required": [
+        "foo",
+        "bar"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1,
+          "readOnly": true
+        },
+        "foo": {
+          "type": "string",
+          "example": "Foo"
+        },
+        "bar": {
+          "type": "integer",
+          "format": "int32",
+          "example": 14
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "datetime",
+          "example": "2023-10-18T14:46:13.752Z",
+          "readOnly": true
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "datetime",
+          "example": "2023-10-18T14:46:13.752Z",
+          "readOnly": true
+        }
+      }
+    },
+    "ApiListResponse": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1
+        },
+        "pages": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Example"
+          }
+        }
+      }
+    },
+    "ApiErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "The field is required"
+        },
+        "code": {
+          "type": "string",
+          "example": "fieldRequired"
+        },
+        "additionalProperties": {
+          "type": "object",
+          "description": "Varies from case to case, can be an error stack, a model, a payload, etc. It's fully customizable"
+        }
+      },
+      "required": [
+        "message",
+        "code"
+      ]
+    },
+    "ApiRecordNotFoundErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Record not found"
+        },
+        "code": {
+          "type": "string",
+          "example": "recordNotFound"
+        },
+        "additionalProperties": {
+          "type": "object",
+          "description": "Varies from case to case, can be an error stack, a model, a payload, etc. It's fully customizable"
+        }
+      },
+      "required": [
+        "message",
+        "code"
+      ]
+    }
+  },
+  "x-components": {
+    "requestBodies": {
+      "Example": {
+        "description": "Example object that needs to be sent to Store or Update a record",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/definitions/Example"
+            }
+          }
+        }
+      }
+    }
+  }
+}
